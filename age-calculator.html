@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Page Title -->
+  <title>Age Calculator - Calculate Your Exact Age in Years, Months, and Days</title>
+
+  <!-- ✅ SEO Meta Tags -->
+  <meta name="description" content="Use our free and simple Age Calculator to find your exact age in years, months, and days. Just enter your birth date and get your real-time age instantly!" />
+  <meta name="keywords" content="age calculator, date of birth calculator, birthday calculator, how old am I, calculate age online, age tool, DOB calculator" />
+  <meta name="author" content="Your Name or Brand" />
+
+  <!-- ✅ Open Graph for social sharing -->
+  <meta property="og:title" content="Free Online Age Calculator" />
+  <meta property="og:description" content="Find your exact age in years, months, and days using our clean, fast, and user-friendly Age Calculator tool." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com/age-calculator" />
+  <meta property="og:image" content="https://yourdomain.com/thumbnail.jpg" />
+
+  <!-- ✅ Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Pikaday CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css" />
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0faff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 128, 255, 0.1);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #007acc;
+      margin-bottom: 1rem;
+    }
+
+    p.description {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.2rem;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    .result {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: #333;
+      background: #eaf6ff;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .pika-single {
+      border: 1px solid #cce8ff;
+      background: #f5fbff;
+      border-radius: 12px;
+      font-family: 'Segoe UI', sans-serif;
+      box-shadow: 0 4px 16px rgba(0, 128, 255, 0.1);
+    }
+
+    .pika-title {
+      background-color: #e1f3ff;
+      color: #007acc;
+      border-bottom: 1px solid #cce8ff;
+    }
+
+    .pika-select {
+      font-size: 14px;
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .pika-table th {
+      color: #007acc;
+    }
+
+    .pika-button {
+      color: #333;
+      background: transparent;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .pika-button:hover {
+      background: #d6f0ff;
+    }
+
+    .is-today .pika-button {
+      border: 1px solid #007acc;
+      font-weight: bold;
+    }
+
+    .is-selected .pika-button {
+      background: #007acc;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Age Calculator</h1>
+    <p class="description">
+      Enter your date of birth to calculate your exact age in years, months, and days.
+    </p>
+    <label for="dob">Date of Birth:</label>
+    <input type="text" id="dob" placeholder="Pick your birth date" readonly />
+
+    <button onclick="calculateAge()">Calculate Age</button>
+
+    <div class="result" id="result">Your age will appear here.</div>
+  </div>
+
+  <!-- Pikaday JS -->
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
+  <script>
+    let picker = new Pikaday({
+      field: document.getElementById('dob'),
+      yearRange: [1900, new Date().getFullYear()],
+      maxDate: new Date(),
+      format: 'YYYY-MM-DD',
+      toString(date) {
+        return date.toISOString().split('T')[0];
+      },
+      parse(dateString) {
+        return new Date(dateString);
+      }
+    });
+
+    function calculateAge() {
+      const dobInput = document.getElementById('dob').value;
+      if (!dobInput) {
+        alert("Please select your date of birth.");
+        return;
+      }
+
+      const selectedDate = new Date(dobInput);
+      const today = new Date();
+      let years = today.getFullYear() - selectedDate.getFullYear();
+      let months = today.getMonth() - selectedDate.getMonth();
+      let days = today.getDate() - selectedDate.getDate();
+
+      if (days < 0) {
+        months--;
+        const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        days += lastMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      const result = `You are ${years} years, ${months} months, and ${days} days old.`;
+      document.getElementById("result").innerText = result;
+    }
+  </script>
+</body>
+</html>
